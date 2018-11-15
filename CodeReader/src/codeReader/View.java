@@ -10,6 +10,7 @@ public class View extends javax.swing.JFrame{
     private JMenu editMenu;
     private JMenuItem addAnno,deleteAnno,addHL,deleteHL;
     private JTextArea ta;
+    private JScrollPane scrollPane;
 
     View(){
         bar = new JMenuBar();
@@ -37,6 +38,7 @@ public class View extends javax.swing.JFrame{
         editMenu.add(addAnno);
         editMenu.add(deleteAnno);
         editMenu.add(addHL);
+        addHL.addActionListener(new EditListener(this, "Add Highlight"));
         editMenu.add(deleteHL);
         /* Bar */
         bar.add(fileMenu);
@@ -60,4 +62,5 @@ public class View extends javax.swing.JFrame{
     public JTextArea getTA(){
         return ta;
     }
+
 }
