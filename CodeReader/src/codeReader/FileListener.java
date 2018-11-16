@@ -28,6 +28,7 @@ public class FileListener implements ActionListener {
             openDia.setVisible(true);
             String dirPath = openDia.getDirectory();//获取文件路径
             String fileName = openDia.getFile();//获取文件名称
+            String content = null;
             //System.out.println(dirPath +"++"+ fileName);
 
             //如果打开路径 或 目录为空 则返回空
@@ -38,13 +39,14 @@ public class FileListener implements ActionListener {
                 BufferedReader bufr = new BufferedReader(new FileReader(file));
                 String line = null;
                 while( (line = bufr.readLine())!= null) {
-                    view.getTA().append(line +"\r\n");
+                   content += line +'\n';
                 }
                 bufr.close();
             }
             catch (IOException ex) {
                 throw new RuntimeException("File reading failed!");
             }
+            view.getTA().setText(content);
         }
 
     public void saveFile(){

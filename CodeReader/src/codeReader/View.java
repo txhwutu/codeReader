@@ -9,7 +9,7 @@ public class View extends javax.swing.JFrame{
     private JMenuItem openItem,saveItem,closeItem,exitItem;
     private JMenu editMenu;
     private JMenuItem addAnno,deleteAnno,addHL,deleteHL;
-    private JTextArea ta;
+    private JTextPane ta;
     private JScrollPane scrollPane;
 
     View(){
@@ -44,7 +44,7 @@ public class View extends javax.swing.JFrame{
         bar.add(fileMenu);
         bar.add(editMenu);
         setJMenuBar( bar );
-        ta = new JTextArea();
+        ta = new JTextPane();
         add( ta );
         /* Frame */
         setSize(1600,900);
@@ -59,7 +59,7 @@ public class View extends javax.swing.JFrame{
         } ) ;
     }
 
-    public JTextArea getTA(){
+    public JTextPane getTA(){
         return ta;
     }
 
