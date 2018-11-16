@@ -24,9 +24,9 @@ public class EditListener implements ActionListener {
 
     }
     public void addHL(){
-        int from = view.getTA().getSelectionStart();
-        int to = view.getTA().getSelectionEnd();
-        view.getTA().setSelectionColor(Color.YELLOW);
+        int from = view.getTP().getSelectionStart();
+        int to = view.getTP().getSelectionEnd();
+        view.getTP().setSelectionColor(Color.YELLOW);
     }
     public void deleteHL(){
 

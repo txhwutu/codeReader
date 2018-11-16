@@ -33,7 +33,7 @@ public class FileListener implements ActionListener {
 
             //如果打开路径 或 目录为空 则返回空
             if(dirPath == null || fileName == null) return ;
-            view.getTA().setText("");//清空文本
+            view.getTP().setText("");//清空文本
             file = new File(dirPath,fileName);
             try {
                 BufferedReader bufr = new BufferedReader(new FileReader(file));
@@ -46,7 +46,7 @@ public class FileListener implements ActionListener {
             catch (IOException ex) {
                 throw new RuntimeException("File reading failed!");
             }
-            view.getTA().setText(content);
+            view.getTP().setText(content);
         }
 
     public void saveFile(){
@@ -61,7 +61,7 @@ public class FileListener implements ActionListener {
         }
         try {
             BufferedWriter bufw = new BufferedWriter(new FileWriter(file));
-            String text = view.getTA().getText();
+            String text = view.getTP().getText();
             bufw.write(text);
             bufw.close();
         }
@@ -71,7 +71,7 @@ public class FileListener implements ActionListener {
     }
 
     public void closeFile(){
-        view.getTA().setText("");
+        view.getTP().setText("");
     }
 
     public void exitItem(){
