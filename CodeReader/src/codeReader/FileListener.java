@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.* ;
 import java.io.*;
 
+import javax.swing.text.Highlighter.Highlight;
+
 
 public class FileListener implements ActionListener {
     View view;
@@ -51,6 +53,7 @@ public class FileListener implements ActionListener {
 
     public void saveFile(){
         saveDia = new FileDialog(view,"Save File",FileDialog.SAVE);
+        Highlight[] h;
         if(file == null){//文件不存在情况下 创建文件
             saveDia.setVisible(true);
             String dirPath = saveDia.getDirectory();
@@ -59,6 +62,13 @@ public class FileListener implements ActionListener {
                 return ;
             file = new File(dirPath,fileName);
         }
+    	h = view.getTP().getHighlighter().getHighlights();
+    	System.out.println(h.length);
+    	for (Highlight hl:h) {
+    		System.out.print(hl.getStartOffset());
+    		System.out.print(' ');
+    		System.out.println(hl.getEndOffset());
+    	}
         try {
             BufferedWriter bufw = new BufferedWriter(new FileWriter(file));
             String text = view.getTP().getText();
