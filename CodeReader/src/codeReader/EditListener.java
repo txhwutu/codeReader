@@ -1,8 +1,11 @@
 package codeReader;
 
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import static com.sun.glass.ui.Cursor.setVisible;
 
 public class EditListener implements ActionListener {
     View view;
@@ -14,7 +17,7 @@ public class EditListener implements ActionListener {
     @Override public void actionPerformed( ActionEvent e ){
         if("Add Annotation" == editOp) addAnno();
         else if("Delete Annotation" == editOp) deleteAnno();
-        else if ("Add Highlight" == editOp) addHL();
+        else if ("Add Highlight" == editOp) {addHL(); }
         else deleteHL();
     }
     public void addAnno(){
@@ -24,11 +27,18 @@ public class EditListener implements ActionListener {
 
     }
     public void addHL(){
-        int from = view.getTP().getSelectionStart();
-        int to = view.getTP().getSelectionEnd();
-        view.getTP().setSelectionColor(Color.YELLOW);
+        int start = view.getTP().getSelectionStart();
+        int end = view.getTP().getSelectionEnd();
+
+        Highlighter.HighlightPainter redPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.red);
+        try {
+        view.getTP().getHighlighter().addHighlight(start, end, redPainter);
+        System.out.println(start == end);
+        } catch (BadLocationException ble) {
+        }
     }
     public void deleteHL(){
-
+        int start = view.getTP().getSelectionStart();
+        int end = view.getTP().getSelectionEnd();
     }
 }

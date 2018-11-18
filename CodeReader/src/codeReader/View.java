@@ -14,7 +14,9 @@ public class View extends javax.swing.JFrame{
 
     View(){
         bar = new JMenuBar();
-
+        textPane = new JTextPane();
+        scrollPane = new JScrollPane(textPane);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         /* File Menu */
         fileMenu = new JMenu("File");
         openItem = new JMenuItem("Open");
@@ -34,18 +36,19 @@ public class View extends javax.swing.JFrame{
         addAnno = new JMenuItem("Add Annotation");
         deleteAnno = new JMenuItem("Delete Annotation");
         addHL = new JMenuItem("Add Highlight");
+        addHL.addActionListener(new EditListener(this,"Add Highlight"));
         deleteHL = new JMenuItem("Delete Highlight");
         editMenu.add(addAnno);
         editMenu.add(deleteAnno);
         editMenu.add(addHL);
-        addHL.addActionListener(new EditListener(this, "Add Highlight"));
         editMenu.add(deleteHL);
         /* Bar */
         bar.add(fileMenu);
         bar.add(editMenu);
         setJMenuBar( bar );
-        textPane = new JTextPane();
-        add( textPane );
+
+        add( scrollPane );
+
         /* Frame */
         setSize(1600,900);
         setVisible( true );
