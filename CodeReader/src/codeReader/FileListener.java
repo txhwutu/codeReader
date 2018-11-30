@@ -5,8 +5,15 @@ import java.awt.event.* ;
 import java.io.*;
 import java.util.ArrayList;
 
+import javax.swing.JLabel;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.Highlight;
 
+import net.java.balloontip.BalloonTip;
+import net.java.balloontip.CustomBalloonTip;
+import net.java.balloontip.styles.EdgedBalloonStyle;
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 
@@ -29,18 +36,18 @@ public class FileListener implements ActionListener {
         else exitItem();
     }
 
-        //璁剧疆鎵撳紑鏂囦欢鍔熻兘
+        //ç’�å‰§ç–†éŽµæ’³ç´‘é�‚å›¦æ¬¢é�”ç†»å…˜
         public void openFile() {
             openDia = new FileDialog(view,"Open File",FileDialog.LOAD);
             openDia.setVisible(true);
-            String dirPath = openDia.getDirectory();//鑾峰彇鏂囦欢璺緞
-            String fileName = openDia.getFile();//鑾峰彇鏂囦欢鍚嶇О
+            String dirPath = openDia.getDirectory();//é‘¾å³°å½‡é�‚å›¦æ¬¢ç’ºîˆšç·ž
+            String fileName = openDia.getFile();//é‘¾å³°å½‡é�‚å›¦æ¬¢é�šå¶‡Ðž
             String content = new String();
             //System.out.println(dirPath +"++"+ fileName);
 
-            //濡傛灉鎵撳紑璺緞 鎴� 鐩綍涓虹┖ 鍒欒繑鍥炵┖
+            //æ¿¡å‚›ç�‰éŽµæ’³ç´‘ç’ºîˆšç·ž éŽ´ï¿½ é�©î†¼ç¶�æ¶“è™¹â”– é�’æ¬’ç¹‘é�¥ç‚µâ”–
             if(dirPath == null || fileName == null) return ;
-            view.getTP().setText("");//娓呯┖鏂囨湰
+            view.getTP().setText("");//å¨“å‘¯â”–é�‚å›¨æ¹°
             file = new File(dirPath,fileName);
             try {
                 BufferedReader bufr = new BufferedReader(new FileReader(file));
@@ -56,13 +63,26 @@ public class FileListener implements ActionListener {
             JSONObject jsonObject=JSONObject.fromObject(content);
             myFile mFile = (myFile)JSONObject.toBean(jsonObject, myFile.class);
             view.getTP().setText(mFile.getText());
+            Highlighter.HighlightPainter redPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.red);
             for (Pair i:mFile.getHlList()) {
-            	i.getStart();
-            	i.getEnd();
+                try {
+                	view.getTP().getHighlighter().addHighlight(i.getStart(), i.getEnd(), redPainter);
+                } catch (BadLocationException ble) {
+                } 	
             }
             for (Anno i:mFile.getAnnoList()) {
-            	Rectangle r = new Rectangle(i.getStart().intValue(), i.getEnd().intValue(), (int)i.getWidth(), (int)i.getHight());
-            	i.getContent();
+            	Rectangle r = new Rectangle(i.getStart().intValue(), i.getEnd().intValue(), (int)i.getWidth(), (int)i.getHight());        	
+                final CustomBalloonTip balloonTip =new CustomBalloonTip(
+                        view.getTP(),
+                        new JLabel(i.getContent()),
+                        r,
+                        new EdgedBalloonStyle(Color.WHITE, Color.BLUE),
+                        BalloonTip.Orientation.LEFT_ABOVE,  BalloonTip.AttachLocation.ALIGNED,
+                        0, 20,
+                        false
+                );
+                // Add a close button that permanently close it
+                balloonTip.setCloseButton(BalloonTip.getDefaultCloseButton(), true);
             }
         }
 
