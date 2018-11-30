@@ -1,16 +1,22 @@
 package codeReader;
 
+import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.text.Highlighter.Highlight;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import static com.sun.glass.ui.Cursor.setVisible;
+import java.util.ArrayList;
+
+import net.java.balloontip.BalloonTip;
+import net.java.balloontip.CustomBalloonTip;
+import net.java.balloontip.styles.EdgedBalloonStyle;
 
 public class EditListener implements ActionListener {
     View view;
     String editOp;
+    ArrayList<Rectangle> annoList = new ArrayList<>();
     public EditListener(View view, String editOp) {
         this.view = view;
         this.editOp = editOp;
@@ -26,9 +32,40 @@ public class EditListener implements ActionListener {
     
     public void addAnno(){
 
+        String inputValue = JOptionPane.showInputDialog("Please input an annotation");
+        Rectangle rectangle = new Rectangle();
+        try {
+            rectangle = view.getTP().modelToView(view.getTP().getCaretPosition());
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+        annoList.add(rectangle);
+
+        //test
+        for (int i=0; i < annoList.size(); ++i) {
+            System.out.println(annoList.get(i).x + "; " + annoList.get(i).y + "; " + annoList.get(i).width + "; " + annoList.get(i).height);
+        }
+        //test
+        EdgedBalloonStyle style = new EdgedBalloonStyle(Color.WHITE, Color.BLUE);
+        // Now construct the balloon tip
+
+        final CustomBalloonTip balloonTip =new CustomBalloonTip(
+                view.getTP(),
+                new JLabel(inputValue),
+                rectangle,
+                new EdgedBalloonStyle(Color.WHITE, Color.BLUE),
+                BalloonTip.Orientation.LEFT_ABOVE,  BalloonTip.AttachLocation.ALIGNED,
+                0, 20,
+                false
+        );
+        // Add a close button that permanently close it
+        balloonTip.setCloseButton(BalloonTip.getDefaultCloseButton(), true);
+        System.out.println("aaaa");
+
     }
     
     public void deleteAnno(){
+        //暂时用来实现写xml
 
     }
     
@@ -45,5 +82,11 @@ public class EditListener implements ActionListener {
     public void deleteHL(){
         int start = view.getTP().getSelectionStart();
         int end = view.getTP().getSelectionEnd();
+        System.out.println( start == end);
+        Highlight[] h = view.getTP().getHighlighter().getHighlights();
+        for (Highlight hl:h) {
+            if (start >= hl.getStartOffset() && end <= hl.getEndOffset())
+            view.getTP().getHighlighter().removeHighlight(hl);
+        }
     }
 }

@@ -34,10 +34,12 @@ public class View extends javax.swing.JFrame{
         /* Annotation Menu */
         editMenu = new JMenu("Edit");
         addAnno = new JMenuItem("Add Annotation");
+        addAnno.addActionListener(new EditListener(this,"Add Annotation"));
         deleteAnno = new JMenuItem("Delete Annotation");
         addHL = new JMenuItem("Add Highlight");
         addHL.addActionListener(new EditListener(this,"Add Highlight"));
         deleteHL = new JMenuItem("Delete Highlight");
+        deleteHL.addActionListener(new EditListener(this,"Delete Highlight"));
         editMenu.add(addAnno);
         editMenu.add(deleteAnno);
         editMenu.add(addHL);
@@ -46,8 +48,9 @@ public class View extends javax.swing.JFrame{
         bar.add(fileMenu);
         bar.add(editMenu);
         setJMenuBar( bar );
-
+        scrollPane.setBounds( 0, 0, 200, 200 );
         add( scrollPane );
+
 
         /* Frame */
         setSize(1600,900);
