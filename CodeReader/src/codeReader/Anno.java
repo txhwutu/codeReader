@@ -5,7 +5,7 @@ public class Anno {
 		// TODO Auto-generated constructor stub
 		setStart(a);
 		setEnd(b);
-		setHight(h);
+		setHeight(h);
 		setWidth(w);
 		setContent(c);
 	}
@@ -28,12 +28,12 @@ public class Anno {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public double getHight() {
-		return hight;
+	public double getHeight() {
+		return height;
 	}
 
-	public void setHight(double hight) {
-		this.hight = hight;
+	public void setHeight(double hight) {
+		this.height = height;
 	}
 
 	public double getWidth() {
@@ -45,7 +45,7 @@ public class Anno {
 	}
 	private double start;
 	private double end;
-	private double hight;
+	private double height;
 	private double width;
 	private String content;
 }

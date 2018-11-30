@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class myFile {
 	private String text;
-	private ArrayList<Pair> hlList = new ArrayList<>();
-	private ArrayList<Anno> annoList = new ArrayList<>();
+	private ArrayList<Pair> hlList = new ArrayList<Pair>();
+	private ArrayList<Anno> annoList = new ArrayList<Anno>();
 	
 	public String getText() {
 		return text;

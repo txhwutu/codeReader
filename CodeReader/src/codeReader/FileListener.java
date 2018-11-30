@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.* ;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.text.BadLocationException;
@@ -15,6 +17,7 @@ import net.java.balloontip.BalloonTip;
 import net.java.balloontip.CustomBalloonTip;
 import net.java.balloontip.styles.EdgedBalloonStyle;
 import net.sf.json.JSON;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 
@@ -60,21 +63,24 @@ public class FileListener implements ActionListener {
             catch (IOException ex) {
                 throw new RuntimeException("File reading failed!");
             }
-            JSONObject jsonObject=JSONObject.fromObject(content);
-            myFile mFile = (myFile)JSONObject.toBean(jsonObject, myFile.class);
-            view.getTP().setText(mFile.getText());
+            JSONObject file = JSONObject.fromObject(content);
+            view.getTP().setText(file.get("text").toString());
             Highlighter.HighlightPainter redPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.red);
-            for (Pair i:mFile.getHlList()) {
+            JSONArray  hlList = file.getJSONArray("hlList");
+            for (int i = 0; i < hlList.length(); i++) {
+            	JSONObject hl = hlList.getJSONObject(i); 
                 try {
-                	view.getTP().getHighlighter().addHighlight(i.getStart(), i.getEnd(), redPainter);
+                	view.getTP().getHighlighter().addHighlight(hl.getInt("start"), hl.getInt("end"), redPainter);
                 } catch (BadLocationException ble) {
                 } 	
             }
-            for (Anno i:mFile.getAnnoList()) {
-            	Rectangle r = new Rectangle(i.getStart().intValue(), i.getEnd().intValue(), (int)i.getWidth(), (int)i.getHight());        	
+            JSONArray annoList = file.getJSONArray("annoList");
+            for (int i = 0; i < annoList.length(); i++) {
+            	JSONObject anno = annoList.getJSONObject(i);
+            	Rectangle r = new Rectangle(anno.getInt("start"), anno.getInt("end"), anno.getInt("width"), anno.getInt("height"));        	
                 final CustomBalloonTip balloonTip =new CustomBalloonTip(
                         view.getTP(),
-                        new JLabel(i.getContent()),
+                        new JLabel(anno.getString("content")),
                         r,
                         new EdgedBalloonStyle(Color.WHITE, Color.BLUE),
                         BalloonTip.Orientation.LEFT_ABOVE,  BalloonTip.AttachLocation.ALIGNED,
