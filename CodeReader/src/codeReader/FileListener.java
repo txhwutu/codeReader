@@ -3,14 +3,19 @@ package codeReader;
 import java.awt.*;
 import java.awt.event.* ;
 import java.io.*;
+import java.util.ArrayList;
 
 import javax.swing.text.Highlighter.Highlight;
+
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
 
 
 public class FileListener implements ActionListener {
     View view;
     String fileOp;
     static private File file;
+    private myFile mfile = new myFile();
     private FileDialog openDia,saveDia;
     public FileListener(View view, String fileOp){
         this.view = view;
@@ -24,18 +29,18 @@ public class FileListener implements ActionListener {
         else exitItem();
     }
 
-        //设置打开文件功能
+        //璁剧疆鎵撳紑鏂囦欢鍔熻兘
         public void openFile() {
             openDia = new FileDialog(view,"Open File",FileDialog.LOAD);
             openDia.setVisible(true);
-            String dirPath = openDia.getDirectory();//获取文件路径
-            String fileName = openDia.getFile();//获取文件名称
+            String dirPath = openDia.getDirectory();//鑾峰彇鏂囦欢璺緞
+            String fileName = openDia.getFile();//鑾峰彇鏂囦欢鍚嶇О
             String content = new String();
             //System.out.println(dirPath +"++"+ fileName);
 
-            //如果打开路径 或 目录为空 则返回空
+            //濡傛灉鎵撳紑璺緞 鎴� 鐩綍涓虹┖ 鍒欒繑鍥炵┖
             if(dirPath == null || fileName == null) return ;
-            view.getTP().setText("");//清空文本
+            view.getTP().setText("");//娓呯┖鏂囨湰
             file = new File(dirPath,fileName);
             try {
                 BufferedReader bufr = new BufferedReader(new FileReader(file));
@@ -54,25 +59,26 @@ public class FileListener implements ActionListener {
     public void saveFile(){
         saveDia = new FileDialog(view,"Save File",FileDialog.SAVE);
         Highlight[] h;
-        if(file == null){//文件不存在情况下 创建文件
-            saveDia.setVisible(true);
-            String dirPath = saveDia.getDirectory();
-            String fileName = saveDia.getFile();
-            if(dirPath == null || fileName == null)
-                return ;
-            file = new File(dirPath,fileName);
-        }
+        saveDia.setVisible(true);
+        String dirPath = saveDia.getDirectory();
+        String fileName = saveDia.getFile();
+        if(dirPath == null || fileName == null)
+           return ;
+        file = new File(dirPath,fileName);
+        
+        ArrayList<Pair> hlList = new ArrayList<>();
     	h = view.getTP().getHighlighter().getHighlights();
-    	System.out.println(h.length);
     	for (Highlight hl:h) {
-    		System.out.print(hl.getStartOffset());
-    		System.out.print(' ');
-    		System.out.println(hl.getEndOffset());
+    		hlList.add(new Pair(hl.getStartOffset(), hl.getEndOffset()));
     	}
+    	mfile.setHlList(hlList);
+    	mfile.setText(view.getTP().getText());
+    	mfile.setAnnoList(view.getannolist());
+    	JSONObject jsonObject = JSONObject.fromObject(mfile);
+        System.out.println(jsonObject.toString());
         try {
             BufferedWriter bufw = new BufferedWriter(new FileWriter(file));
-            String text = view.getTP().getText();
-            bufw.write(text);
+            bufw.write(jsonObject.toString());
             bufw.close();
         }
         catch (IOException ex) {

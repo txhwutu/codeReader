@@ -16,7 +16,6 @@ import net.java.balloontip.styles.EdgedBalloonStyle;
 public class EditListener implements ActionListener {
     View view;
     String editOp;
-    ArrayList<Rectangle> annoList = new ArrayList<>();
     public EditListener(View view, String editOp) {
         this.view = view;
         this.editOp = editOp;
@@ -39,13 +38,8 @@ public class EditListener implements ActionListener {
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
-        annoList.add(rectangle);
+        view.addanno(new Anno(rectangle.getX(), rectangle.getY(), rectangle.getHeight(), rectangle.getWidth(), inputValue));
 
-        //test
-        for (int i=0; i < annoList.size(); ++i) {
-            System.out.println(annoList.get(i).x + "; " + annoList.get(i).y + "; " + annoList.get(i).width + "; " + annoList.get(i).height);
-        }
-        //test
         EdgedBalloonStyle style = new EdgedBalloonStyle(Color.WHITE, Color.BLUE);
         // Now construct the balloon tip
 
@@ -60,7 +54,6 @@ public class EditListener implements ActionListener {
         );
         // Add a close button that permanently close it
         balloonTip.setCloseButton(BalloonTip.getDefaultCloseButton(), true);
-        System.out.println("aaaa");
 
     }
     

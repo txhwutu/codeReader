@@ -1,6 +1,7 @@
 package codeReader;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class View extends javax.swing.JFrame{
 
@@ -11,6 +12,7 @@ public class View extends javax.swing.JFrame{
     private JMenuItem addAnno,deleteAnno,addHL,deleteHL;
     private JTextPane textPane;
     private JScrollPane scrollPane;
+    private ArrayList<Anno> annoList = new ArrayList<>();
 
     View(){
         bar = new JMenuBar();
@@ -68,5 +70,12 @@ public class View extends javax.swing.JFrame{
     public JTextPane getTP(){
         return textPane;
     }
-
+    
+    public void addanno(Anno r) {
+		this.annoList.add(r);
+	}
+    
+    public ArrayList<Anno> getannolist() {
+		return annoList;
+	}
 }
