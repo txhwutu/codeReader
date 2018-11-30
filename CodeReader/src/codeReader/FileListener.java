@@ -62,6 +62,7 @@ public class FileListener implements ActionListener {
             }
             for (Anno i:mFile.getAnnoList()) {
             	Rectangle r = new Rectangle(i.getStart().intValue(), i.getEnd().intValue(), (int)i.getWidth(), (int)i.getHight());
+            	i.getContent();
             }
         }
 
