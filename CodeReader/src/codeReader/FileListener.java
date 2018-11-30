@@ -56,6 +56,13 @@ public class FileListener implements ActionListener {
             JSONObject jsonObject=JSONObject.fromObject(content);
             myFile mFile = (myFile)JSONObject.toBean(jsonObject, myFile.class);
             view.getTP().setText(mFile.getText());
+            for (Pair i:mFile.getHlList()) {
+            	i.getStart();
+            	i.getEnd();
+            }
+            for (Anno i:mFile.getAnnoList()) {
+            	Rectangle r = new Rectangle(i.getStart().intValue(), i.getEnd().intValue(), (int)i.getWidth(), (int)i.getHight());
+            }
         }
 
     public void saveFile(){
