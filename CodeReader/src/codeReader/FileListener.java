@@ -53,7 +53,9 @@ public class FileListener implements ActionListener {
             catch (IOException ex) {
                 throw new RuntimeException("File reading failed!");
             }
-            view.getTP().setText(content);
+            JSONObject jsonObject=JSONObject.fromObject(content);
+            myFile mFile = (myFile)JSONObject.toBean(jsonObject, myFile.class);
+            view.getTP().setText(mFile.getText());
         }
 
     public void saveFile(){
